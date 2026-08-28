@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Domando o Hermes Agent — Seu Primeiro Funcionário Digital 24/7 · LABHD-UFBA</title>
+<meta name="description" content="Curso prático: do conceito de agentes autônomos à instalação passo a passo do Hermes Agent em VPS. Leonardo F. Nascimento · LABHD-UFBA.">
+<style>
+:root{
+  --paper:#F6F3EC; --ink:#1C2B23; --green:#2E5941; --terracota:#C4703F; --muted:#5A665E;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{height:100%;background:#111812;font-family:'Inter',system-ui,-apple-system,'Segoe UI',Arial,sans-serif;overflow:hidden}
+#stage{position:fixed;inset:0;display:flex;align-items:center;justify-content:center}
+#frame{position:relative;width:1920px;height:1080px;transform-origin:center center;box-shadow:0 20px 80px rgba(0,0,0,.5)}
+#frame img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;background:#111812;display:none}
+#frame img.active{display:block}
+#counter{position:fixed;bottom:14px;right:18px;color:rgba(246,243,236,.85);font-size:14px;letter-spacing:.08em;font-family:'JetBrains Mono',monospace;background:rgba(0,0,0,.35);padding:6px 12px;border-radius:8px;z-index:10;user-select:none}
+#hint{position:fixed;bottom:14px;left:18px;color:rgba(246,243,236,.55);font-size:12px;letter-spacing:.05em;font-family:'JetBrains Mono',monospace;z-index:10;user-select:none}
+#bar{position:fixed;top:0;left:0;height:3px;background:var(--terracota);width:0;z-index:11;transition:width .2s}
+.nav{position:fixed;top:50%;transform:translateY(-50%);width:56px;height:56px;border-radius:50%;border:1px solid rgba(246,243,236,.25);background:rgba(0,0,0,.3);color:#F6F3EC;font-size:22px;cursor:pointer;z-index:10;display:flex;align-items:center;justify-content:center;opacity:.35;transition:opacity .2s}
+.nav:hover{opacity:1}
+#prev{left:16px}#next{right:16px}
+@media (max-width:760px){.nav{width:44px;height:44px}#hint{display:none}}
+</style>
+</head>
+<body>
+<div id="bar"></div>
+<div id="stage"><div id="frame"></div></div>
+<button class="nav" id="prev" aria-label="Anterior">‹</button>
+<button class="nav" id="next" aria-label="Próximo">›</button>
+<div id="counter">1 / 17</div>
+<div id="hint">← → navegar · F fullscreen · PDF: deck.pdf</div>
+<script>
+const N=17;let cur=0;const frame=document.getElementById('frame');
+for(let i=1;i<=N;i++){const img=document.createElement('img');img.src='slides/slide_'+String(i).padStart(2,'0')+'.png';img.alt='Slide '+i;img.loading=(i<=3?'eager':'lazy');frame.appendChild(img);}
+const imgs=frame.querySelectorAll('img');
+function show(i){cur=Math.max(0,Math.min(N-1,i));imgs.forEach((im,k)=>im.classList.toggle('active',k===cur));document.getElementById('counter').textContent=(cur+1)+' / '+N;document.getElementById('bar').style.width=((cur+1)/N*100)+'%';}
+function fit(){const s=Math.min(innerWidth/1920,innerHeight/1080);frame.style.transform='scale('+s+')';}
+addEventListener('resize',fit);fit();show(0);
+addEventListener('keydown',e=>{if(e.key==='ArrowRight'||e.key===' '||e.key==='PageDown')show(cur+1);else if(e.key==='ArrowLeft'||e.key==='PageUp')show(cur-1);else if(e.key==='Home')show(0);else if(e.key==='End')show(N-1);else if(e.key.toLowerCase()==='f'){document.fullscreenElement?document.exitFullscreen():document.documentElement.requestFullscreen();}});
+let tx=0;addEventListener('touchstart',e=>tx=e.touches[0].clientX,{passive:true});
+addEventListener('touchend',e=>{const d=e.changedTouches[0].clientX-tx;if(d<-50)show(cur+1);else if(d>50)show(cur-1);},{passive:true});
+document.getElementById('next').onclick=()=>show(cur+1);
+document.getElementById('prev').onclick=()=>show(cur-1);
+</script>
+</body>
+</html>
