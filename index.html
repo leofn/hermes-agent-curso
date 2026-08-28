@@ -35,6 +35,8 @@ html,body{height:100%;background:#111812;font-family:'Inter',system-ui,-apple-sy
 
 
 
+
+
 /* ── Mobile (retrato): cards verticais nativos ── */
 #mview{display:none;position:fixed;inset:0;overflow-y:auto;-webkit-overflow-scrolling:touch;background:var(--paper);color:var(--ink);padding:20px 18px 90px}
 body.mmode #mview{display:block}
@@ -88,7 +90,7 @@ body.mmode #mnav{display:flex}
 <div id="counter">1 / 17</div>
 <div id="hint">← → navegar · F fullscreen · PDF: deck.pdf</div>
 <script>
-const N=17;let cur=0;const frame=document.getElementById('frame');
+const N=18;let cur=0;const frame=document.getElementById('frame');
 for(let i=1;i<=N;i++){const img=document.createElement('img');img.src='slides/slide_'+String(i).padStart(2,'0')+'.png';img.alt='Slide '+i;img.loading=(i<=3?'eager':'lazy');frame.appendChild(img);}
 const imgs=frame.querySelectorAll('img');
 function show(i){cur=Math.max(0,Math.min(N-1,i));imgs.forEach((im,k)=>im.classList.toggle('active',k===cur));document.getElementById('counter').textContent=(cur+1)+' / '+N;document.getElementById('bar').style.width=((cur+1)/N*100)+'%';}
@@ -99,6 +101,8 @@ let tx=0;addEventListener('touchstart',e=>tx=e.touches[0].clientX,{passive:true}
 addEventListener('touchend',e=>{const d=e.changedTouches[0].clientX-tx;if(d<-50)show(cur+1);else if(d>50)show(cur-1);},{passive:true});
 document.getElementById('next').onclick=()=>show(cur+1);
 document.getElementById('prev').onclick=()=>show(cur-1);
+
+
 
 
 
